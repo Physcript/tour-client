@@ -1,8 +1,38 @@
+.container {
+  padding: 0% 3%;
+}
+
+.h-90 {
+  height: 90vh;
+}
+.d-flex { 
+  display: flex;
+}
+.d-space-between {
+  justify-content: space-between;
+}
+.d-row {
+  flex-direction: row;
+}
+.d-column {
+  flex-direction: column;
+}
+.gap-1 {
+  gap: 10px;
+}
+.gap-2 {
+  gap: 20px;
+}
+
+
+input {
+  padding: 2px 5px;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+
+    font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
