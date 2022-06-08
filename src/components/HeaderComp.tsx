@@ -20,7 +20,7 @@ const HeaderComp: React.FC<IHeaderComp> = ( props ) => {
   return (
     <div className='d-flex d-space-between container headerComp' style = {{ height: '10vh' }}>
       <section>
-        <label onClick = { () => { navigate('/') } } >Logo</label>
+        <label onClick = { () => { navigate('/test') } } >Logo</label>
       </section>
       {
         userContext.userState.STATUS ? (
