@@ -1,16 +1,21 @@
 
-import React, { useState , useEffect } from 'react'
+import { upload } from '@testing-library/user-event/dist/upload'
+import { abort } from 'process'
+import React, { useState , useContext , useEffect , Component} from 'react'
+import AuthContext from '../context/auth/context'
 import req from '../module/req'
 export interface ICreatePost {}
 export interface IEUserInput {
   title?: string,
   description?: string,
   image?: any,
-  location: string
+  location?: string
 }
 
 
 const CreatePost = ( props:any ) => {
+    const userContext = useContext(AuthContext)
+
     const [ defaultImage, setDefaultImage ] = useState<string>('https://res.cloudinary.com/dnnq8kne2/image/upload/v1654587009/Tour/qy3u9be6ppp2aedk2n57.jpg') 
     const [ userInput, setUserInput ] = useState({
       title: '',
@@ -25,7 +30,7 @@ const CreatePost = ( props:any ) => {
     const [ image,setImage ] = useState<any[]>([{}]) 
     const [ imageError,setImageError] = useState<string>('')
     
-
+    const [ _file,set_File ] = useState<FileList>()
 
     const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
       setImageError('')
@@ -39,6 +44,7 @@ const CreatePost = ( props:any ) => {
         }
 
       setFileCount(e.target.files!.length) 
+      set_File(e.target.files!)
 
       Array.from(e.target.files!).forEach(file => {
         
@@ -50,17 +56,11 @@ const CreatePost = ( props:any ) => {
       
     }
 
-    const uploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadHandler = () => {
       
-      setImageError('')
-
-    if(e.target.files!.length >= 5)
-      {
-        setImageError('Maximum of 4 image')
-        return
-      }
+    setImageError('')
   
-    Array.from(e.target.files!).forEach(file => {
+    Array.from(_file!).forEach(file => {
 
       const formData = new FormData()
       formData.append('img', file)
@@ -78,14 +78,6 @@ const CreatePost = ( props:any ) => {
 
               console.log(public_id)
               console.log(url)
-
-              setImage((val) => ({
-                  ...val,
-                  [fileCount += 1]: {
-                      public_id,
-                      url
-                    }
-                }))
 
             })
           }
@@ -109,15 +101,8 @@ const CreatePost = ( props:any ) => {
   }
 
   const createHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    setErrorUserInput(undefined)
-
-    if(userInput.description.trim() === '')
-      {
-        setErrorUserInput((val:any) => ({
-          ...val,
-          description: 'Description required'
-        })) 
-      }
+    
+    setErrorUserInput(undefined) 
 
     if(userInput.title.trim() === '') 
       {
@@ -125,7 +110,9 @@ const CreatePost = ( props:any ) => {
             ...val,
             title: 'Title required'
           }))
+        return
       }
+
 
     if(userInput.location.trim() === '')
       {
@@ -133,7 +120,19 @@ const CreatePost = ( props:any ) => {
             ...val,
             location: 'Location required'
           }))
+        return
       }
+
+
+    if(userInput.description.trim() === '')
+      {
+        setErrorUserInput((val:any) => ({
+          ...val,
+          description: 'Description required'
+        }))
+        return
+      }
+
 
     if(fileCount === 0)
       {
@@ -141,22 +140,55 @@ const CreatePost = ( props:any ) => {
           ...val,
           image: 'Image required'
         }))
-      }
-
-     
+        return
+      }    
+    
+    _end()
   }
 
 
   const _end = () => {
-     
-    if(Object.keys(errorUserInput!).length > 0)
+  
+  const formData = new FormData()
+
+  formData.append('title',  userInput.title )
+  formData.append('description', userInput.description)
+  formData.append('tag', userInput.location)
+  formData.append('_uid', userContext.userState.USER.uid)
+  formData.append('email', userContext.userState.USER.email)
+  
+  Array.from(_file!).forEach((file) => {
+    formData.append('img', file)
+  })  
+
+  let url = 'http://localhost:1337/api/p/create'
+  const _request = new Request(url, {
+    method: 'POST',
+    headers: { 'token' : `${localStorage.getItem('token')}` } ,
+    body: formData
+  })
+
+  fetch(_request)
+    .then((val) => {
+    if(val.status === 200) 
       {
-        console.log('end')
-        return 
+        val.json().then((res) => {
+          let { postId } = res.message 
+          uploadHandler()
+
+        })
       }
-    
+    else
+      {
+
+      }
+
+  })
+
   //fetching
   //
+    
+    
 
   }
 
@@ -168,9 +200,7 @@ const CreatePost = ( props:any ) => {
       }))
   }
   
-  useEffect(() => {
-    errorUserInput === undefined ? console.log('') : _end()
-  },[createHandler])
+
 
   return (
     
