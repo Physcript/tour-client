@@ -7,6 +7,7 @@ import { BrowserRouter,Routes,Route } from 'react-router-dom'
 import './App.css';
 import { DUserContext } from './interfaces/auth/context';
 import { AuthContextProvider } from './context/auth/context';
+import ProtectedComponent from './components/ProtectedComponents';
 
 function App() {
 
@@ -22,13 +23,31 @@ function App() {
         <Routes>
           {
             routes.map((route,index) => {
-              return (
-                <Route 
-                  key = { index }
-                  element = { <route.element /> }
-                  path = { route.path }
-                />
-              )
+              if ( route.auth === true) 
+                {
+                  return (
+                    <Route 
+                      key = { index }
+                      element = 
+                        {
+                          <ProtectedComponent>
+                            <route.element />
+                          </ProtectedComponent>
+                        }
+                      path = { route.path }
+                    />
+                  )
+                }
+              else
+                { 
+                  return (
+                    <Route 
+                    key = { index }
+                    element = { <route.element /> }
+                    path = { route.path }
+                    />
+                  )
+                }
             }) 
           } 
         </Routes>

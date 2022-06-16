@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import SinglePost from '../components/SinglePost'
 export interface IStartPage
 {
 
@@ -6,8 +7,10 @@ export interface IStartPage
 
 const StartPage = ( props: React.FC<IStartPage> ) => {
   return (
-    <div>
-      <label>StartPage</label>
+    <div className = 'd-flex'>
+      <section style = {{ margin: 'auto' }}>
+        <SinglePost /> 
+      </section>
     </div>
   )
 }

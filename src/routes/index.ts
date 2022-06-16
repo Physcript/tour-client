@@ -1,10 +1,9 @@
 
 import StartPage from '../pages/StartPage'
 import LRPage from '../pages/LRPage'
-
+import PostPage from '../pages/PostPage'
 
 import IRoute from '../interfaces/route'
-import TestPage from '../pages/TestPage'
 
 
 const mainRoute: IRoute[] = [
@@ -27,18 +26,18 @@ const lrRoute: IRoute[] = [
   }
 ]
 
-const testRoute: IRoute[] = [
+const postRoute: IRoute[] = [
   {
-    path: '/test',
-    element: TestPage,
-    auth: false
+    path: '/panel',
+    element: PostPage,
+    auth: true
   }
 ]
 
 const router: IRoute[] = [
   ...mainRoute,
   ...lrRoute,
-  ...testRoute
+  ...postRoute
 ]
 
 

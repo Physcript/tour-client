@@ -21,6 +21,7 @@ const reducer = ( state: IUserContext,action: IReducer ):IUserContext => {
         STATUS: true
     }
     case 'LOGOUT': 
+      localStorage.setItem('token', '')
       return {
         USER: DUser,
         TOKEN: '',

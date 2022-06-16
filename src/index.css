@@ -31,7 +31,7 @@ input {
 
 body {
   margin: 0;
-
+  background: #d3d3d3;
     font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

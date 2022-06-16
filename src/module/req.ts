@@ -12,7 +12,7 @@ const req = (props: IRequest) => {
    return new Request(`http://localhost:1337/api${props.url}`, {
     method: props.method,
     headers: { 'Content-Type': 'application/json', token: `${localStorage.getItem('token')}` },
-    body: props.body ?? ''
+    body: props.body ?? undefined
   })
     
 }

@@ -4,12 +4,14 @@ import CreatePost from '../components/CreatePost'
 
 export interface ITestPage {}
 
-const TestPage = (props: React.FC<ITestPage>) => {
+const PostPage = (props: React.FC<ITestPage>) => {
   return (
     <div>
-      <CreatePost />
+
+      Postpage
+
     </div>
   )
 }
 
-export default TestPage
+export default PostPage 
